@@ -6,17 +6,17 @@ plugins {
 
 android {
     compileSdk rootProject.compileSdkVersion
-
+    buildFeatures {
+        dataBinding true
+    }
     defaultConfig {
         applicationId "com.dani.naversearch"
         minSdk rootProject.minSdkVersion
         targetSdk rootProject.targetSdkVersion
         versionCode 1
         versionName "1.0"
-
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
-
     buildTypes {
         release {
             minifyEnabled false
