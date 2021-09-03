@@ -16,6 +16,8 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        buildConfigField("String", "NAVER_CLIENT_ID", '"Vk9_SAQsaXfH2NcLxmCW"')
+        buildConfigField("String", "NAVER_CLIENT_SECRET", '"b2OFtszbay"')
     }
     buildTypes {
         release {
@@ -40,7 +42,10 @@ dependencies {
     implementation "androidx.constraintlayout:constraintlayout:$rootProject.constraintLayoutVersion"
     implementation "androidx.navigation:navigation-fragment-ktx:$rootProject.navigationVersion"
     implementation "androidx.navigation:navigation-ui-ktx:$rootProject.navigationVersion"
-    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation "com.squareup.retrofit2:converter-gson:$rootProject.retrofitVersion"
+    implementation "com.squareup.retrofit2:retrofit:$rootProject.retrofitVersion"
+    implementation "com.squareup.okhttp3:logging-interceptor:$rootProject.okhttpLoggingVersion"
+    implementation "com.github.bumptech.glide:glide:$rootProject.glideVersion"
 
     // Testing dependencies
     testImplementation "junit:junit:$rootProject.junitVersion"

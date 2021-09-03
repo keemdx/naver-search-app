@@ -1,44 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/cl_search"
-    android:layout_width="match_parent"
-    android:layout_height="56dp">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <EditText
-        android:id="@+id/et_search"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="12dp"
-        android:layout_marginEnd="10dp"
-        android:background="@color/white"
-        android:ems="10"
-        android:inputType="text"
-        android:padding="5dp"
-        android:textSize="16sp"
-        android:textCursorDrawable="@drawable/black_cursor"
-        app:layout_constraintBottom_toTopOf="@+id/v_green_line"
-        app:layout_constraintEnd_toStartOf="@+id/iv_search"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:hint="@string/search"/>
-
-    <ImageView
-        android:id="@+id/iv_search"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="12dp"
-        app:layout_constraintBottom_toBottomOf="@+id/et_search"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_search"
-        app:tint="@color/naver_green" />
-
-    <View
-        android:id="@+id/v_green_line"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_search"
         android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/naver_green"
-        app:layout_constraintBottom_toBottomOf="parent" />
+        android:layout_height="56dp">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <EditText
+            android:id="@+id/et_search"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="12dp"
+            android:layout_marginEnd="10dp"
+            android:background="@color/white"
+            android:ems="10"
+            android:hint="@string/search"
+            android:inputType="text"
+            android:padding="5dp"
+            android:textCursorDrawable="@drawable/black_cursor"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toTopOf="@+id/v_green_line"
+            app:layout_constraintEnd_toStartOf="@+id/iv_search"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/iv_search"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="12dp"
+            app:layout_constraintBottom_toBottomOf="@+id/et_search"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_search"
+            app:tint="@color/naver_green" />
+
+        <View
+            android:id="@+id/v_green_line"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/naver_green"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
