@@ -1,22 +1,32 @@
-package com.dani.naversearch.adapters
+package com.dani.naversearch.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.dani.naversearch.data.Items
+import com.dani.naversearch.data.Item
 import com.dani.naversearch.databinding.ListItemResultImageBinding
 
-class ImageListAdapter(private var items: List<Items>) :
-    RecyclerView.Adapter<ImageListAdapter.ViewHolder>() {
 
-    private lateinit var imageBinding: ListItemResultImageBinding
+class ImageListAdapter : RecyclerView.Adapter<ImageListAdapter.ViewHolder>() {
+
+    private val items: MutableList<Item> = mutableListOf()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        imageBinding =
+        val imageBinding =
             ListItemResultImageBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return ViewHolder(imageBinding)
+        return ViewHolder(imageBinding).apply {
+            itemView.setOnClickListener {
+                itemClick?.onClick(items[adapterPosition])
+            }
+        }
     }
+
+    interface ItemClick {
+        fun onClick(item: Item)
+    }
+
+    var itemClick: ItemClick? = null
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(items[position])
@@ -25,14 +35,23 @@ class ImageListAdapter(private var items: List<Items>) :
     inner class ViewHolder(private val binding: ListItemResultImageBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(item: Items) {
+        fun bind(item: Item) {
+
             Glide.with(binding.root)
                 .load(item.thumbnail)
-                .override(item.sizewidth.toInt(), item.sizeheight.toInt())
+                .override(350, 345)
+                .centerCrop()
                 .into(binding.ivImage)
         }
     }
 
     override fun getItemCount(): Int = items.size
 
+    fun setItems(newItems: List<Item>) {
+        with(items) {
+            clear()
+            addAll(newItems)
+        }
+        notifyDataSetChanged()
+    }
 }

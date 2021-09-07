@@ -15,12 +15,13 @@
             app:layout_constraintBottom_toTopOf="@+id/bnv_bottom_navi"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent">
+        </FrameLayout>
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/bnv_bottom_navi"
             android:layout_width="match_parent"
-            android:layout_height="60dp"
+            android:layout_height="58dp"
             app:itemIconSize="26dp"
             app:itemIconTint="@color/bnv_color_selector"
             app:itemTextColor="@color/bnv_color_selector"

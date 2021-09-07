@@ -8,6 +8,7 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.create
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
@@ -17,38 +18,41 @@ interface NaverAPI {
     fun getSearch(
         @Path("type") type: String,
         @Query("query") query: String,
-        @Query("display") display: Int? = null,
+        @Query("display") display: Int? = 20,
         @Query("start") start: Int? = null
     ): Call<ResultGetSearch>
 
     companion object {
         private const val BASE_URL = "https://openapi.naver.com/"
 
-        fun create(): NaverAPI {
-            val logger = HttpLoggingInterceptor().apply { level =
+        private val logger = HttpLoggingInterceptor().apply {
+            level = if (BuildConfig.DEBUG) {
                 HttpLoggingInterceptor.Level.BODY
+            } else {
+                HttpLoggingInterceptor.Level.NONE
             }
-
-            val headerInterceptor = Interceptor {
-                val request = it.request()
-                    .newBuilder()
-                    .addHeader("X-Naver-Client-Id", BuildConfig.NAVER_CLIENT_ID)
-                    .addHeader("X-Naver-Client-Secret", BuildConfig.NAVER_CLIENT_SECRET)
-                    .build()
-                return@Interceptor it.proceed(request)
-            }
-
-            val client = OkHttpClient.Builder()
-                .addInterceptor(headerInterceptor)
-                .addInterceptor(logger)
-                .build()
-
-            return Retrofit.Builder()
-                .baseUrl(BASE_URL)
-                .client(client)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build()
-                .create(NaverAPI::class.java)
         }
+
+        private val headerInterceptor = Interceptor {
+            val request = it.request()
+                .newBuilder()
+                .addHeader("X-Naver-Client-Id", BuildConfig.NAVER_CLIENT_ID)
+                .addHeader("X-Naver-Client-Secret", BuildConfig.NAVER_CLIENT_SECRET)
+                .build()
+            return@Interceptor it.proceed(request)
+        }
+
+        private val client = OkHttpClient.Builder()
+            .addInterceptor(headerInterceptor)
+            .addInterceptor(logger)
+            .build()
+
+        private val retrofit = Retrofit.Builder()
+            .baseUrl(BASE_URL)
+            .client(client)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+
+        val naverAPI: NaverAPI = retrofit.create()
     }
 }

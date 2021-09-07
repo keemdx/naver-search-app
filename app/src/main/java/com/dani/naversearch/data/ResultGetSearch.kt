@@ -1,19 +1,29 @@
 package com.dani.naversearch.data
 
-public data class ResultGetSearch(
-    var lastBuildDate: String = "",
-    var total: Int = 0,
-    var start: Int = 0,
-    var display: Int = 0,
-    var items: List<Items>
+import com.google.gson.annotations.SerializedName
+
+data class ResultGetSearch(
+    @SerializedName("total")
+    val total: Int = 0,
+    @SerializedName("lastBuildDate")
+    val lastBuildDate: String = "",
+    @SerializedName("start")
+    val start: Int = 0,
+    @SerializedName("display")
+    val display: Int = 0,
+    @SerializedName("items")
+    val items: List<Item>
 )
 
-data class Items (
-    var title: String = "",
-    var link: String = "",
-    var description: String = "",
-    var thumbnail: String = "",
-    var sizewidth: String = "",
-    var sizeheight: String = "",
-    var pubDate: String = ""
+data class Item(
+    @SerializedName("title")
+    val title: String = "",
+    @SerializedName("link")
+    val link: String = "",
+    @SerializedName("description")
+    val description: String = "",
+    @SerializedName("thumbnail")
+    val thumbnail: String = "",
+    @SerializedName("pubDate")
+    val pubDate: String = ""
 )
