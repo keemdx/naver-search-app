@@ -4,12 +4,13 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.commitNow
+import androidx.lifecycle.ViewModelProviders
 import com.dani.naversearch.R
 import com.dani.naversearch.databinding.ActivityMainBinding
 import com.dani.naversearch.enum.SearchCategory
 
 
-class MainActivity : AppCompatActivity() {
+class BottomNavigationActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
 
