@@ -16,10 +16,10 @@
         android:theme="@style/Theme.NaverSearch"
         tools:targetApi="m">
         <activity
-            android:name=".ui.WebViewActivity"
+            android:name=".ui.view.WebViewActivity"
             android:exported="true" />
         <activity
-            android:name=".ui.BottomNavigationActivity"
+            android:name=".ui.view.BottomNavigationActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

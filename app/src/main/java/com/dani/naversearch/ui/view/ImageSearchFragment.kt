@@ -1,4 +1,4 @@
-package com.dani.naversearch.ui
+package com.dani.naversearch.ui.view
 
 import android.content.Intent
 import android.os.Bundle
@@ -6,22 +6,23 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.dani.naversearch.adapter.PostListAdapter
+import com.dani.naversearch.adapter.ImageListAdapter
 import com.dani.naversearch.api.NaverAPI
 import com.dani.naversearch.data.Item
 import com.dani.naversearch.data.ResultGetSearch
-import com.dani.naversearch.databinding.FragmentBlogSearchBinding
+import com.dani.naversearch.databinding.FragmentImageSearchBinding
 import com.dani.naversearch.util.KeyboardUtil
 import com.dani.naversearch.util.errorLog
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class BlogSearchFragment : Fragment() {
 
-    private lateinit var binding: FragmentBlogSearchBinding
-    private val adapter: PostListAdapter = PostListAdapter().apply {
-        itemClick = object : PostListAdapter.ItemClick {
+class ImageSearchFragment : Fragment() {
+
+    private val binding by lazy { FragmentImageSearchBinding.inflate(layoutInflater) }
+    private val adapter: ImageListAdapter = ImageListAdapter().apply {
+        itemClick = object : ImageListAdapter.ItemClick {
             override fun onClick(item: Item) {
                 startWebViewActivity(item.link)
             }
@@ -33,27 +34,31 @@ class BlogSearchFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = FragmentBlogSearchBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initView()
+
+        val title = requireArguments().getString("title")
+        val key = requireArguments().getString("key")
+
+        initView(title.toString())
         binding.searchView.ivSearch.setOnClickListener {
             val searchKeyword = binding.searchView.etSearch.text.toString()
-            getSearchResult(searchKeyword)
+
+            getSearchResult(key.toString(), searchKeyword)
             KeyboardUtil(requireContext()).hideKeyboard(binding.searchView.etSearch)
         }
     }
 
-    private fun initView() {
-        binding.searchView.etSearch.hint = "Blog Search"
-        binding.rvBlogList.adapter = adapter
+    private fun initView(title: String) {
+        binding.searchView.etSearch.hint = "$title Search"
+        binding.rvImageList.adapter = adapter
     }
 
-    private fun getSearchResult(searchKeyword: String) {
-        NaverAPI.naverAPI.getSearch("blog", searchKeyword)
+    private fun getSearchResult(key: String, searchKeyword: String) {
+        NaverAPI.naverAPI.getSearch(key, searchKeyword)
             .enqueue(object : Callback<ResultGetSearch> {
                 override fun onResponse(
                     call: Call<ResultGetSearch>,
@@ -75,5 +80,14 @@ class BlogSearchFragment : Fragment() {
         val intent = Intent(context, WebViewActivity::class.java)
         intent.putExtra("url", url)
         startActivity(intent)
+    }
+
+    companion object {
+        fun newInstance(title: String, key: String) = ImageSearchFragment().apply {
+            arguments = Bundle().apply {
+                putString("title", title)
+                putString("key", key)
+            }
+        }
     }
 }

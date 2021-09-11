@@ -9,11 +9,14 @@
         <entry key="app/src/main/res/drawable/ic_blog.xml" value="0.30572916666666666" />
         <entry key="app/src/main/res/drawable/ic_naver_image.xml" value="0.24739583333333334" />
         <entry key="app/src/main/res/drawable/ic_search.xml" value="0.21979166666666666" />
+        <entry key="app/src/main/res/layout/activity_bottom_navigation.xml" value="0.20729166666666668" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.375" />
         <entry key="app/src/main/res/layout/activity_web_view.xml" value="0.32019927536231885" />
+        <entry key="app/src/main/res/layout/fragment_base.xml" value="0.29846014492753625" />
         <entry key="app/src/main/res/layout/fragment_blog_search.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_cafe_search.xml" value="0.13991769547325103" />
         <entry key="app/src/main/res/layout/fragment_image_search.xml" value="0.11" />
+        <entry key="app/src/main/res/layout/fragment_search.xml" value="0.290625" />
         <entry key="app/src/main/res/layout/fragment_web_view.xml" value="0.26927083333333335" />
         <entry key="app/src/main/res/layout/layout_bottom_navigation_view.xml" value="0.1" />
         <entry key="app/src/main/res/layout/layout_search_view.xml" value="0.335" />

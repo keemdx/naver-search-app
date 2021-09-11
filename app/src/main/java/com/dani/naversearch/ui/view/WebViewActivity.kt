@@ -1,4 +1,4 @@
-package com.dani.naversearch.ui
+package com.dani.naversearch.ui.view
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -32,7 +32,7 @@ class WebViewActivity : AppCompatActivity() {
         // 와이파이 & 데이터 연결되어 있으면 웹뷰 생성
         if (getNetworkConnected(this)) {
 
-            webView.settings.javaScriptEnabled = true // 자바 스크립트 허용
+            webView.settings.javaScriptEnabled = true
 
             // 웹뷰안에 새 창이 뜨지 않도록 방지
             webView.webViewClient = WebViewClient()

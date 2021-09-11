@@ -6,7 +6,7 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.CafeSearchFragment">
+        tools:context=".ui.view.BlogSearchFragment">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -18,12 +18,13 @@
                 layout="@layout/layout_search_view" />
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rv_cafe_list"
+                android:id="@+id/rv_post_list"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="8dp"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:listitem="@layout/list_item_result_post" />
         </LinearLayout>
     </FrameLayout>
 </layout>
