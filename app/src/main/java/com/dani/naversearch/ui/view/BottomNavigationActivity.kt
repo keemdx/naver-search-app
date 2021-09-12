@@ -1,33 +1,27 @@
 package com.dani.naversearch.ui.view
 
 import android.os.Bundle
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import com.dani.naversearch.R
 import com.dani.naversearch.databinding.ActivityBottomNavigationBinding
-import com.dani.naversearch.enum.PageType
+import com.dani.naversearch.enums.PageType
+import com.dani.naversearch.ui.viewmodel.BottomNavigationViewModel
 
 
 class BottomNavigationActivity : AppCompatActivity() {
 
-    private lateinit var binding: ActivityBottomNavigationBinding
+    private val viewModel: BottomNavigationViewModel by viewModels()
+    private val binding by lazy { ActivityBottomNavigationBinding.inflate(layoutInflater) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_bottom_navigation)
+        setContentView(binding.root)
 
-        initNavigationBar()
-    }
-
-    private fun initNavigationBar() {
-
-        binding.bnvBottomNavi.setOnItemSelectedListener {
-            val pageType = getPageType(it.itemId)
-            changeFragment(pageType)
-            true
+        binding.vm = viewModel
+        viewModel.currentPageType.observe(this) {
+            changeFragment(it)
         }
-        changeFragment(PageType.BLOG)
     }
 
     private fun changeFragment(pageType: PageType) {
@@ -48,15 +42,6 @@ class BottomNavigationActivity : AppCompatActivity() {
                 }
             }
         transaction.commitAllowingStateLoss()
-    }
-
-    private fun getPageType(menuItemId: Int): PageType {
-        return when (menuItemId) {
-            R.id.action_blog_search -> PageType.BLOG
-            R.id.action_cafe_search -> PageType.CAFE
-            R.id.action_image_search -> PageType.IMAGE
-            else -> throw IllegalArgumentException("not found menu item id")
-        }
     }
 
     private fun getFragment(pageType: PageType): Fragment {

@@ -18,41 +18,7 @@ interface NaverAPI {
     fun getSearch(
         @Path("type") type: String,
         @Query("query") query: String,
-        @Query("display") display: Int? = 20,
+        @Query("display") display: Int? = null,
         @Query("start") start: Int? = null
     ): Call<ResultGetSearch>
-
-    companion object {
-        private const val BASE_URL = "https://openapi.naver.com/"
-
-        private val logger = HttpLoggingInterceptor().apply {
-            level = if (BuildConfig.DEBUG) {
-                HttpLoggingInterceptor.Level.BODY
-            } else {
-                HttpLoggingInterceptor.Level.NONE
-            }
-        }
-
-        private val headerInterceptor = Interceptor {
-            val request = it.request()
-                .newBuilder()
-                .addHeader("X-Naver-Client-Id", BuildConfig.NAVER_CLIENT_ID)
-                .addHeader("X-Naver-Client-Secret", BuildConfig.NAVER_CLIENT_SECRET)
-                .build()
-            return@Interceptor it.proceed(request)
-        }
-
-        private val client = OkHttpClient.Builder()
-            .addInterceptor(headerInterceptor)
-            .addInterceptor(logger)
-            .build()
-
-        private val retrofit = Retrofit.Builder()
-            .baseUrl(BASE_URL)
-            .client(client)
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-
-        val naverAPI: NaverAPI = retrofit.create()
-    }
 }

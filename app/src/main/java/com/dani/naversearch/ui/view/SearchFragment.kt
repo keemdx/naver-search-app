@@ -7,18 +7,19 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import com.dani.naversearch.adapter.PostListAdapter
-import com.dani.naversearch.api.NaverAPI
 import com.dani.naversearch.data.Item
-import com.dani.naversearch.data.ResultGetSearch
+import com.dani.naversearch.data.SearchRepository
+import com.dani.naversearch.ui.viewmodel.SearchViewModel
+import com.dani.naversearch.ui.viewmodel.SearchViewModelFactory
 import com.dani.naversearch.util.KeyboardUtil
-import com.dani.naversearch.util.errorLog
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 class SearchFragment : Fragment() {
     private val binding by lazy { FragmentSearchBinding.inflate(layoutInflater) }
+    lateinit var viewModel: SearchViewModel
+
     private val adapter: PostListAdapter = PostListAdapter().apply {
         itemClick = object : PostListAdapter.ItemClick {
             override fun onClick(item: Item) {
@@ -45,7 +46,16 @@ class SearchFragment : Fragment() {
         binding.searchView.ivSearch.setOnClickListener {
             val searchKeyword = binding.searchView.etSearch.text.toString()
 
-            getSearchResult(key.toString(), searchKeyword)
+            viewModel = ViewModelProvider(this, SearchViewModelFactory(SearchRepository())).get(
+                SearchViewModel::class.java
+            )
+
+            viewModel.resultList.observe(viewLifecycleOwner, Observer {
+                adapter.setItems(it)
+            })
+
+            viewModel.getSearchResult(key.toString(), searchKeyword)
+
             KeyboardUtil(requireContext()).hideKeyboard(binding.searchView.etSearch)
         }
     }
@@ -53,25 +63,6 @@ class SearchFragment : Fragment() {
     private fun initView(title: String) {
         binding.searchView.etSearch.hint = "$title Search"
         binding.rvPostList.adapter = adapter
-    }
-
-    private fun getSearchResult(key: String, searchKeyword: String) {
-        NaverAPI.naverAPI.getSearch(key, searchKeyword)
-            .enqueue(object : Callback<ResultGetSearch> {
-                override fun onResponse(
-                    call: Call<ResultGetSearch>,
-                    response: Response<ResultGetSearch>
-                ) {
-                    val result = response.body()
-                    if (result != null && response.isSuccessful) {
-                        adapter.setItems(result.items)
-                    }
-                }
-
-                override fun onFailure(call: Call<ResultGetSearch>, t: Throwable) {
-                    errorLog("Fail : $t")
-                }
-            })
     }
 
     private fun startWebViewActivity(url: String) {
@@ -88,6 +79,4 @@ class SearchFragment : Fragment() {
             }
         }
     }
-
-
 }

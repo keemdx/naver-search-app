@@ -1,4 +1,4 @@
-package com.dani.naversearch.enum
+package com.dani.naversearch.enums
 
 enum class PageType(val title: String, val key: String, val tag: String) {
     BLOG("Blog", "blog", "tag_blog"),

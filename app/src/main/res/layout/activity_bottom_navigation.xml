@@ -1,12 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="vm"
+            type="com.dani.naversearch.ui.viewmodel.BottomNavigationViewModel" />
+    </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context=".ui.view.BottomNavigationActivity">
+        android:layout_height="match_parent">
 
         <FrameLayout
             android:id="@+id/fl"
@@ -15,8 +19,7 @@
             app:layout_constraintBottom_toTopOf="@+id/bnv_bottom_navi"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-        </FrameLayout>
+            app:layout_constraintTop_toTopOf="parent"/>
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/bnv_bottom_navi"
@@ -26,10 +29,11 @@
             app:itemIconTint="@color/bnv_color_selector"
             app:itemTextColor="@color/bnv_color_selector"
             app:labelVisibilityMode="unlabeled"
+            app:menu="@menu/menu_bottom_navigation"
+            app:onItemSelectedListener="@{(menu) -> vm.setCurrentPage(menu.itemId)}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:menu="@menu/bottom_navi" />
+            app:layout_constraintStart_toStartOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
