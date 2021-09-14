@@ -4,13 +4,14 @@ import android.os.Build
 import android.text.Html
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.dani.naversearch.data.Item
 import com.dani.naversearch.databinding.ListItemResultPostBinding
 
 class PostListAdapter : RecyclerView.Adapter<PostListAdapter.ViewHolder>() {
 
-    private val items: MutableList<Item> = mutableListOf()
+    private var items: MutableList<Item> = mutableListOf()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val postBinding =
@@ -55,10 +56,10 @@ class PostListAdapter : RecyclerView.Adapter<PostListAdapter.ViewHolder>() {
     }
 
     fun setItems(newItems: List<Item>) {
-        with(items) {
-            clear()
-            addAll(newItems)
-        }
-        notifyDataSetChanged()
+        val diffCallback = ResultDiffCallback(this.items, newItems)
+        val diffResult = DiffUtil.calculateDiff(diffCallback)
+
+        this.items = newItems.toMutableList()
+        diffResult.dispatchUpdatesTo(this)
     }
 }

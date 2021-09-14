@@ -2,6 +2,7 @@ package com.dani.naversearch.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.dani.naversearch.data.Item
@@ -10,7 +11,7 @@ import com.dani.naversearch.databinding.ListItemResultImageBinding
 
 class ImageListAdapter : RecyclerView.Adapter<ImageListAdapter.ViewHolder>() {
 
-    private val items: MutableList<Item> = mutableListOf()
+    private var items: MutableList<Item> = mutableListOf()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val imageBinding =
@@ -48,10 +49,10 @@ class ImageListAdapter : RecyclerView.Adapter<ImageListAdapter.ViewHolder>() {
     override fun getItemCount(): Int = items.size
 
     fun setItems(newItems: List<Item>) {
-        with(items) {
-            clear()
-            addAll(newItems)
-        }
-        notifyDataSetChanged()
+        val diffCallback = ResultDiffCallback(this.items, newItems)
+        val diffResult = DiffUtil.calculateDiff(diffCallback)
+
+        this.items = newItems.toMutableList()
+        diffResult.dispatchUpdatesTo(this)
     }
 }
