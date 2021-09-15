@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.dani.naversearch.adapter.ImageListAdapter
+import com.dani.naversearch.adapter.PostListAdapter
 import com.dani.naversearch.data.Item
 import com.dani.naversearch.data.SearchRepository
 import com.dani.naversearch.databinding.FragmentImageSearchBinding
@@ -17,17 +18,9 @@ import com.dani.naversearch.ui.viewmodel.SearchViewModelFactory
 import com.dani.naversearch.util.KeyboardUtil
 
 class ImageSearchFragment : Fragment() {
-
     private val binding by lazy { FragmentImageSearchBinding.inflate(layoutInflater) }
     lateinit var viewModel: SearchViewModel
-
-    private val adapter: ImageListAdapter = ImageListAdapter().apply {
-        itemClick = object : ImageListAdapter.ItemClick {
-            override fun onClick(item: Item) {
-                startWebViewActivity(item.link)
-            }
-        }
-    }
+    private val adapter = ImageListAdapter()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -50,26 +43,21 @@ class ImageSearchFragment : Fragment() {
             viewModel = ViewModelProvider(this, SearchViewModelFactory(SearchRepository())).get(
                 SearchViewModel::class.java
             )
-
-            viewModel.resultList.observe(viewLifecycleOwner, Observer {
-                adapter.setItems(it)
-            })
-
+            subscribeUi(adapter)
             viewModel.getSearchResult(key.toString(), searchKeyword)
-
             KeyboardUtil(requireContext()).hideKeyboard(binding.searchView.etSearch)
+        }
+    }
+
+    private fun subscribeUi(adapter: ImageListAdapter) {
+        viewModel.resultList.observe(viewLifecycleOwner) { resultList ->
+            adapter.submitList(resultList)
         }
     }
 
     private fun initView(title: String) {
         binding.searchView.etSearch.hint = "$title Search"
         binding.rvImageList.adapter = adapter
-    }
-
-    private fun startWebViewActivity(url: String) {
-        val intent = Intent(context, WebViewActivity::class.java)
-        intent.putExtra("url", url)
-        startActivity(intent)
     }
 
     companion object {

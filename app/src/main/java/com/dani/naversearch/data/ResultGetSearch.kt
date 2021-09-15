@@ -1,6 +1,15 @@
 package com.dani.naversearch.data
 
+import android.graphics.drawable.Drawable
+import android.os.Build
+import android.text.Html
+import android.widget.ImageView
 import com.google.gson.annotations.SerializedName
+import com.bumptech.glide.Glide
+
+import androidx.databinding.BindingAdapter
+import com.bumptech.glide.request.target.Target
+
 
 data class ResultGetSearch(
     @SerializedName("total")
@@ -27,3 +36,15 @@ data class Item(
     @SerializedName("pubDate")
     val pubDate: String = ""
 )
+
+object ImageViewBind {
+    @JvmStatic
+    @BindingAdapter("setImage")
+    fun setImageUrl(view: ImageView, thumbnail: String?) {
+        Glide.with(view.context)
+            .load(thumbnail)
+            .override(350, 345)
+            .centerCrop()
+            .into(view)
+    }
+}

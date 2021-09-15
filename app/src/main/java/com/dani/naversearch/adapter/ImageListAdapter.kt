@@ -1,58 +1,67 @@
 package com.dani.naversearch.adapter
 
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.dani.naversearch.data.Item
 import com.dani.naversearch.databinding.ListItemResultImageBinding
+import com.dani.naversearch.ui.view.WebViewActivity
 
 
-class ImageListAdapter : RecyclerView.Adapter<ImageListAdapter.ViewHolder>() {
+class ImageListAdapter : ListAdapter<Item, RecyclerView.ViewHolder>(ImageDiffCallback()) {
 
-    private var items: MutableList<Item> = mutableListOf()
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+        return ImageViewHolder(
+            ListItemResultImageBinding.inflate(
+                LayoutInflater.from(parent.context),
+                parent,
+                false
+            )
+        )
+    }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val imageBinding =
-            ListItemResultImageBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return ViewHolder(imageBinding).apply {
-            itemView.setOnClickListener {
-                itemClick?.onClick(items[adapterPosition])
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        val image = getItem(position)
+        if (image != null) {
+            (holder as ImageViewHolder).bind(image)
+        }
+    }
+
+    inner class ImageViewHolder(
+        private val binding: ListItemResultImageBinding
+    ) : RecyclerView.ViewHolder(binding.root) {
+
+        init {
+            binding.setClickListener { view ->
+                binding.photo?.let { photo ->
+                    val intent = Intent(view.context, WebViewActivity::class.java)
+                    intent.putExtra("url", photo.link)
+                    view.context.startActivity(intent)
+                }
+            }
+        }
+
+        fun bind(item: Item) {
+            binding.apply {
+                photo = item
+                executePendingBindings()
             }
         }
     }
 
-    interface ItemClick {
-        fun onClick(item: Item)
-    }
+    private class ImageDiffCallback : DiffUtil.ItemCallback<Item>() {
 
-    var itemClick: ItemClick? = null
-
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(items[position])
-    }
-
-    inner class ViewHolder(private val binding: ListItemResultImageBinding) :
-        RecyclerView.ViewHolder(binding.root) {
-
-        fun bind(item: Item) {
-
-            Glide.with(binding.root)
-                .load(item.thumbnail)
-                .override(350, 345)
-                .centerCrop()
-                .into(binding.ivImage)
+        override fun areItemsTheSame(oldItem: Item, newItem: Item): Boolean {
+            return oldItem == newItem
         }
-    }
 
-    override fun getItemCount(): Int = items.size
-
-    fun setItems(newItems: List<Item>) {
-        val diffCallback = ResultDiffCallback(this.items, newItems)
-        val diffResult = DiffUtil.calculateDiff(diffCallback)
-
-        this.items = newItems.toMutableList()
-        diffResult.dispatchUpdatesTo(this)
+        override fun areContentsTheSame(oldItem: Item, newItem: Item): Boolean {
+            return oldItem == newItem
+        }
     }
 }

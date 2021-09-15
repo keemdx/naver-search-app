@@ -2,7 +2,6 @@ package com.dani.naversearch.ui.viewmodel
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.dani.naversearch.api.NaverAPI
 import com.dani.naversearch.data.Item
 import com.dani.naversearch.data.ResultGetSearch
 import com.dani.naversearch.data.SearchRepository
