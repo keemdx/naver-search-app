@@ -6,12 +6,11 @@ Android app that searches for Naver posts and images.
 Screenshots
 -----------
 <br>
-<span>
-<img src = "screenshots/naver.gif" width="28%">
-<img src = "screenshots/naver_cafe_search.png" width="28%">
-<img src = "screenshots/naver_image_search.png" width="28%">
-
-</span>
+<p align="left">
+<img src="screenshots/naver.gif" width="271"/>
+<img src="screenshots/naver_cafe_search.png" width="270"/>
+<img src="screenshots/naver_image_search.png" width="270"/>
+</p>
 
 
 API
